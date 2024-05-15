@@ -1,0 +1,8 @@
+spring:
+  #config server configuration
+  cloud:
+    config:
+      enabled: true
+      uri: http://localhost:8888
+server:
+  port: ${SERVER_PORT}
