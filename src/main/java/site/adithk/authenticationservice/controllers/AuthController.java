@@ -1,20 +1,20 @@
 package site.adithk.authenticationservice.controllers;
 
 import jakarta.validation.Valid;
-import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import site.adithk.authenticationservice.dtos.LoginRequest;
-import site.adithk.authenticationservice.dtos.LoginResponse;
-import site.adithk.authenticationservice.dtos.UserRegistrationRequest;
-import site.adithk.authenticationservice.dtos.UserRegistrationResponse;
-import site.adithk.authenticationservice.feignclients.entities.UserEntity;
+import site.adithk.authenticationservice.dtos.*;
+import site.adithk.authenticationservice.exceptions.AlreadyVerifiedException;
+import site.adithk.authenticationservice.exceptions.InvalidLinkException;
+import site.adithk.authenticationservice.exceptions.UserNotFoundException;
+import site.adithk.authenticationservice.exceptions.VerificationLinkExpiredException;
 import site.adithk.authenticationservice.services.authentication.AuthService;
 
 @RestController
 @RequestMapping("auth")
-@CrossOrigin(origins = "*")
+@Slf4j
 public class AuthController {
 
    private final AuthService authService;
@@ -28,12 +28,28 @@ public class AuthController {
         return new ResponseEntity<>(authService.registerUser(registrationRequest), HttpStatus.CREATED);
     }
 
-    @PostMapping("login")
+    @PostMapping("verify/{verificationString}")
+    public ResponseEntity<VerificationResponse> verifyUserEmail(@PathVariable("verificationString")String verificationString) throws InvalidLinkException, VerificationLinkExpiredException, AlreadyVerifiedException {
+        log.info("VerificationLink in Request:{}",verificationString);
+        authService.verifyUserEmail(verificationString);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+
+    @PostMapping("authenticate")
     public ResponseEntity<LoginResponse> authenticateUser(@RequestBody LoginRequest loginRequest){
-
-        return new ResponseEntity<>(authService.authenticateUser(loginRequest), HttpStatus.OK);
-
+      return new ResponseEntity<>(authService.authenticateUser(loginRequest), HttpStatus.OK);
 
     }
+
+    @PostMapping("resend")
+    public ResponseEntity<Void> resendEmail(@RequestParam("email")String email) throws UserNotFoundException, AlreadyVerifiedException {
+
+        authService.resendVerificationLink(email);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+
+
 
 }

@@ -1,4 +1,4 @@
-package site.adithk.authenticationservice.configurations;
+package site.adithk.authenticationservice.configurations.jwt;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

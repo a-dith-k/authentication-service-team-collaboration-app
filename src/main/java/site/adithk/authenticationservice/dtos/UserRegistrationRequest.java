@@ -1,22 +1,24 @@
 package site.adithk.authenticationservice.dtos;
 
 import jakarta.validation.constraints.*;
+import lombok.Data;
 import lombok.Getter;
 
-@Getter
+@Data
 public class UserRegistrationRequest {
 
     @NotBlank
     @NotNull
-    @Size(min = 4) String firstName;
-    @NotNull String lastName;
+    @Size(min = 4,max = 20)
+    private String firstName;
+    @NotNull
+    private String lastName;
     @NotNull
     @NotBlank
-    @Email String email;
+    @Email
+    private String email;
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+
 
     @NotBlank
     @NotNull
@@ -24,5 +26,7 @@ public class UserRegistrationRequest {
             message = "password must be min 4 and max 12 length containing at" +
                     " least 1 uppercase, 1 lowercase, 1 special character and 1 digit "
     )
-    String password;
+    private String password;
+
+    private String verificationLink;
 }

@@ -4,5 +4,31 @@ spring:
     config:
       enabled: true
       uri: http://localhost:8888
+
+  security:
+    oauth2:
+      resourceserver:
+        opaque-token:
+          introspection-uri: https://www.googleapis.com
+          clientId: 1056797004688-aujc6a08bti66vu70k6pc2qdrmt6rf6k.apps.googleusercontent.com
+          clientSecret: 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
+
+  #email server configurations
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    protocol: smtp
+    properties.mail.smtp:
+      auth: true
+      starttls.enable: true
+
 server:
   port: ${SERVER_PORT}
+
+#custom properties
+app:
+  frontend:
+    domain:
+      name: ${DOMAIN_NAME}
