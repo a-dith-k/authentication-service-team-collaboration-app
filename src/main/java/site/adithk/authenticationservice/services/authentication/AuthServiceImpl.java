@@ -126,13 +126,8 @@ public class AuthServiceImpl implements AuthService {
                     userManagementServiceClient.updateUserPartially(userData.getEmail(),true);
                 }
 
-            }else{
-                throw new InvalidLinkException("Invalid Verification Link");
             }
 
-        }catch(InvalidLinkException ex) {
-            log.info("Exception In Verification:{}",ex.getMessage());
-            throw new InvalidLinkException("Invalid Verification Link");
         }catch (VerificationLinkExpiredException ex){
             log.info("Exception In Verification:{}",ex.getMessage());
             throw new VerificationLinkExpiredException("Verification link is expired");
@@ -140,9 +135,9 @@ public class AuthServiceImpl implements AuthService {
             log.info("Exception In Verification:{}",ex.getMessage());
             throw new  AlreadyVerifiedException("already verified");
         }catch (Exception ex){
-            System.out.println("Hello");
+            log.info("general exception caught while verifying link throwing invalid link exception");
             log.info("Exception In Verification:{}",ex.getMessage());
-            throw new InvalidLinkException("Invalid Verification Link or");
+            throw new InvalidLinkException("Invalid Verification Link");
         }
 
 

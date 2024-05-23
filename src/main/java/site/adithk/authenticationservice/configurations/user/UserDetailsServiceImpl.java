@@ -24,12 +24,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private ModelMapper modelMapper;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException, UserNotVerifiedException {
         UserDataResponse userResponse = userManagementClient
                 .getUserData(username).getBody();
 
-        if(userResponse!=null&&!userResponse.getVerificationData().getIsVerified())
-                throw new UserNotVerifiedException("user not verified");
+//        if(userResponse!=null&&!userResponse.getVerificationData().getIsVerified())
+//                throw new UserNotVerifiedException("user not verified");
 
         UserEntity user=modelMapper
                .map(userResponse,UserEntity.class);

@@ -28,8 +28,8 @@ public class AuthController {
         return new ResponseEntity<>(authService.registerUser(registrationRequest), HttpStatus.CREATED);
     }
 
-    @PostMapping("verify/{verificationString}")
-    public ResponseEntity<VerificationResponse> verifyUserEmail(@PathVariable("verificationString")String verificationString) throws InvalidLinkException, VerificationLinkExpiredException, AlreadyVerifiedException {
+    @PostMapping("verify")
+    public ResponseEntity<VerificationResponse> verifyUserEmail(@RequestParam("verificationString")String verificationString) throws InvalidLinkException, VerificationLinkExpiredException, AlreadyVerifiedException {
         log.info("VerificationLink in Request:{}",verificationString);
         authService.verifyUserEmail(verificationString);
         return new ResponseEntity<>(HttpStatus.OK);
